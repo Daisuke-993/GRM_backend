@@ -14,8 +14,6 @@ services:
     ports:
       - ${GO_API_PORT}:8080
     # restart: always
-    # command: >
-    #   sh -c 'go run main.go'
   db:
     image: mysql:8.0
     volumes:

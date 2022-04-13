@@ -1,24 +1,23 @@
-FROM golang:1.17.5-alpine as dev
+FROM golang:latest as dev
 
 ENV ROOT=/go/src/app
 ENV CGO_ENABLED 0
-ENV GO111MODULE=on 
+ENV GO111MODULE=on
 WORKDIR ${ROOT}
+COPY ./src/ ${ROOT}
 
-RUN apk update && apk add git
-RUN go mod init main && go mod tidy
+# RUN go get main \
+#     && go install -v \
+#     && go mod tidy
 
-# Golang モジュールダウンロード
-RUN go mod download
-# Golang ホットリロード(freshのインストール)
-RUN go get github.com/pilu/fresh
+COPY ./docker/go/bash/docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 8080
 
-CMD ["fresh", "-c", ".fresh.conf"]
 
-
-FROM golang:1.15.7-alpine as builder
+FROM golang:latest as builder
 
 ENV ROOT=/go/src/app
 WORKDIR ${ROOT}
