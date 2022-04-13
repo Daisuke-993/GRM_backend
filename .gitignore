@@ -1,5 +1,5 @@
 # Golnag configulation
-./src/go.sum
-./src/tmp/*
-./src/main
+src/go.sum
+src/tmp/*
+src/main
 *.env
