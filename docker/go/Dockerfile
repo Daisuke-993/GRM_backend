@@ -6,9 +6,6 @@ ENV GO111MODULE=on
 WORKDIR ${ROOT}
 COPY ./src/ ${ROOT}
 
-# RUN go get main \
-#     && go install -v \
-#     && go mod tidy
 
 COPY ./docker/go/bash/docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
