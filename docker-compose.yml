@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   app:
-    container_name: 'app'
+    container_name: 'grm-app'
     build:
       context: .
       dockerfile: ./docker/go/Dockerfile
@@ -15,6 +15,7 @@ services:
       - ${GO_API_PORT}:8080
     # restart: always
   db:
+    container_name: 'grm-mysql'
     image: mysql:8.0
     volumes:
       - db-store:/var/lib/mysql
