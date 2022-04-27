@@ -1,3 +1,5 @@
+include .env
+
 DOCKER_APP_CONTAINER := grm-app
 DOCKER_MYSQL_CONTAINER := grm-mysql
 
@@ -21,3 +23,6 @@ app-root: up
 
 mysql-root: up
 	docker exec -it ${DOCKER_MYSQL_CONTAINER} bash || true
+
+mysql-cli: up
+	docker exec -it ${DOCKER_MYSQL_CONTAINER} mysql -p${DB_PASS} || true
