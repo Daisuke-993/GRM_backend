@@ -13,6 +13,13 @@ services:
       - ./src:/go/src/app
     ports:
       - ${GO_API_PORT}:8080
+    environment:
+      - GO_UID=${HOST_UID}
+      - GO_GID=${HOST_GID}
+      - GOOSE_DRIVER=mysql
+      - GOOSE_DBSTRING=root:${DB_PASS}@tcp(host.docker.internal:${DB_PORT})/${DB_NAME}
+    extra_hosts:
+      - "host.docker.internal:${DOCKER_BRIDGE_HOST_IP}"
     # restart: always
   db:
     container_name: 'grm-mysql'
@@ -29,5 +36,7 @@ services:
     ports:
       - "${DB_PORT}:${DB_PORT}/tcp"
     command: --port ${DB_PORT}
+    extra_hosts:
+      - "host.docker.internal:${DOCKER_BRIDGE_HOST_IP}"
 volumes:
   db-store:
