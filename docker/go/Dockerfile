@@ -26,9 +26,6 @@ RUN chown ${GO_UID}:${GO_GID} /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-# コンテナを実行するユーザーを指定
-USER ${GO_UID}
-
 EXPOSE 8080
 
 

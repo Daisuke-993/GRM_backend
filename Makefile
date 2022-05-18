@@ -29,6 +29,9 @@ down:
 app-root: up
 	docker exec -it ${DOCKER_APP_CONTAINER} sh || true
 
+app-docker-user: up
+	docker exec --user=docker -it ${DOCKER_APP_CONTAINER} sh || true
+
 mysql-root: up
 	docker exec -it ${DOCKER_MYSQL_CONTAINER} bash || true
 
