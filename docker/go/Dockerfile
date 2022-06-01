@@ -21,6 +21,9 @@ RUN go install github.com/cosmtrek/air@v1.29.0
 # Install migration tool
 RUN go install github.com/pressly/goose/v3/cmd/goose@latest
 
+# Install gqlgen
+RUN go install github.com/99designs/gqlgen@v0.17.4
+
 COPY ./docker/go/bash/docker-entrypoint.sh /
 RUN chown ${GO_UID}:${GO_GID} /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
