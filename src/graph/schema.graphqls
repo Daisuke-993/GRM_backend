@@ -2,27 +2,33 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+type Query {
+  user(id: ID!): User!
+  restaurants: [Restaurant]
 }
 
 type User {
   id: ID!
   name: String!
+  avatar: String!
 }
 
-type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
-}
-
-type Mutation {
-  createTodo(input: NewTodo!): Todo!
+type Restaurant {
+  id: ID!
+  name: String!
+  address: String!
+  tel: String
+  website: String
+  data_id: String!
+  place_id: String!
+  latitude: Float!
+  longitude: Float!
+  tabelog_url: String
+  gurunavi_url: String
+  smoking: Boolean
+  seats: Int
+  lunch_lower_limit: Int
+  lunch_upper_limit: Int
+  dinner_lower_limit: Int
+  dinner_upper_limit: Int
 }

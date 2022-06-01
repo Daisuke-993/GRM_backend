@@ -2,19 +2,28 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
-}
-
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type Restaurant struct {
+	ID               string  `json:"id"`
+	Name             string  `json:"name"`
+	Address          string  `json:"address"`
+	Tel              *string `json:"tel"`
+	Website          *string `json:"website"`
+	DataID           string  `json:"data_id"`
+	PlaceID          string  `json:"place_id"`
+	Latitude         float64 `json:"latitude"`
+	Longitude        float64 `json:"longitude"`
+	TabelogURL       *string `json:"tabelog_url"`
+	GurunaviURL      *string `json:"gurunavi_url"`
+	Smoking          *bool   `json:"smoking"`
+	Seats            *int    `json:"seats"`
+	LunchLowerLimit  *int    `json:"lunch_lower_limit"`
+	LunchUpperLimit  *int    `json:"lunch_upper_limit"`
+	DinnerLowerLimit *int    `json:"dinner_lower_limit"`
+	DinnerUpperLimit *int    `json:"dinner_upper_limit"`
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
 }
