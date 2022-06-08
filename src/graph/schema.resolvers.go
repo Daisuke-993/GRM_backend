@@ -6,12 +6,29 @@ package graph
 import (
 	"context"
 	"fmt"
+	"main/entity"
 	"main/graph/generated"
 	"main/graph/model"
+	"strconv"
 )
 
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	idn, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	var u entity.User
+
+	res := r.DB.Find(&u, idn)
+	if err := res.Error; err != nil {
+		return nil, err
+	}
+
+	return &model.User{
+		ID:     u.ID,
+		Name:   u.Name,
+		Avatar: u.Avatar,
+	}, nil
 }
 
 func (r *queryResolver) Restaurants(ctx context.Context) ([]*model.Restaurant, error) {
