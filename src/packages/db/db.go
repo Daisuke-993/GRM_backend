@@ -1,8 +1,11 @@
 package db
 
 import(
+    "fmt"
+    "os"
 	"github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/mysql"
+    "github.com/joho/godotenv"
 )
 
 type DB struct {
@@ -14,11 +17,15 @@ type DB struct {
 }
 
 func NewDB() *DB {
+    err := godotenv.Load(".env")
+    if err != nil {
+		fmt.Printf("読み込み出来ませんでした: %v", err)
+	}
     return newDB(&DB{
-        Host: "host.docker.internal:3366",
-        Username: "test",
-        Password: "test",
-        DBName: "Gourmates",
+        Host: os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT"),
+        Username: os.Getenv("DB_USER"),
+        Password: os.Getenv("DB_PASS"),
+        DBName: os.Getenv("DB_NAME"),
     })
 }
 
