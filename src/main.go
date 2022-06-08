@@ -1,23 +1,41 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"net/http"
 
 	"main/graph"
 	"main/graph/generated"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+
+	//"github.com/jinzhu/gorm"
+	//_ "github.com/jinzhu/gorm/dialects/mysql"
+	"main/packages/db"
+	"time"
 )
 
 var e = createMux()
 
+type Category struct {
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+	// _lft       int       `json:"_lft"`
+	// _rgt       int       `json:"_rgt"`
+	Parent_id  int       `json:"parent_id"`
+	Created_at time.Time `json:"created_at"`
+	Updated_at time.Time `json:"updated_at"`
+}
+
+var category Category
+
 func main() {
 	e.GET("/", articleIndex)
+	e.GET("/testDB", testDB)
 
-	// 追記ここから
 	graphqlHandler := handler.NewDefaultServer(
 		generated.NewExecutableSchema(
 			generated.Config{Resolvers: &graph.Resolver{}},
@@ -50,4 +68,10 @@ func createMux() *echo.Echo {
 
 func articleIndex(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!")
+}
+
+func testDB(c echo.Context) error {
+	categories := []Category{}
+	db.NewDB().Connection.Find(&categories)
+	return c.JSON(http.StatusOK, categories)
 }
