@@ -37,3 +37,6 @@ mysql-root: up
 
 mysql-cli: up
 	docker exec -it ${DOCKER_MYSQL_CONTAINER} mysql -p${DB_PASS} || true
+
+generate: up
+	docker exec -it ${DOCKER_APP_CONTAINER} gqlgen generate || true

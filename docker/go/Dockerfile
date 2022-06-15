@@ -24,6 +24,15 @@ RUN go install github.com/pressly/goose/v3/cmd/goose@latest
 # Install gqlgen
 RUN go install github.com/99designs/gqlgen@v0.17.4
 
+# For VSCode dev container tools
+RUN go install github.com/cweill/gotests/gotests@latest
+RUN go install github.com/fatih/gomodifytags@latest
+RUN go install github.com/josharian/impl@latest
+RUN go install github.com/haya14busa/goplay/cmd/goplay@latest
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+RUN go install honnef.co/go/tools/cmd/staticcheck@latest
+RUN go install golang.org/x/tools/gopls@latest
+
 COPY ./docker/go/bash/docker-entrypoint.sh /
 RUN chown ${GO_UID}:${GO_GID} /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh

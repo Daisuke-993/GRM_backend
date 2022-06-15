@@ -3,7 +3,7 @@
 # https://gqlgen.com/getting-started/
 
 type Query {
-  user(id: ID!): User!
+  user(id: ID!): User
   restaurants: [Restaurant]
 }
 

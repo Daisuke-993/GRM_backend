@@ -30,15 +30,13 @@ type Category struct {
 	Updated_at time.Time `json:"updated_at"`
 }
 
-var category Category
-
 func main() {
 	e.GET("/", articleIndex)
 	e.GET("/testDB", testDB)
 
 	graphqlHandler := handler.NewDefaultServer(
 		generated.NewExecutableSchema(
-			generated.Config{Resolvers: &graph.Resolver{}},
+			generated.Config{Resolvers: &graph.Resolver{DB: db.NewDB().Connection}},
 		),
 	)
 	playgroundHandler := playground.Handler("GraphQL", "/query")
