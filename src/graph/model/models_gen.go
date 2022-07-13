@@ -2,28 +2,172 @@
 
 package model
 
+import (
+	"fmt"
+	"io"
+	"strconv"
+)
+
+type Category struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type Pagination struct {
+	CurrentPage int `json:"current_page"`
+	TotalPage   int `json:"total_page"`
+}
+
+type Photo struct {
+	ID           string `json:"id"`
+	RestaurantID string `json:"restaurant_id"`
+	FilePath     string `json:"file_path"`
+	UploadedBy   string `json:"uploaded_by"`
+	MainFlag     bool   `json:"main_flag"`
+}
+
 type Restaurant struct {
-	ID               string  `json:"id"`
-	Name             string  `json:"name"`
-	Address          string  `json:"address"`
-	Tel              *string `json:"tel"`
-	Website          *string `json:"website"`
-	DataID           string  `json:"data_id"`
-	PlaceID          string  `json:"place_id"`
-	Latitude         float64 `json:"latitude"`
-	Longitude        float64 `json:"longitude"`
-	TabelogURL       *string `json:"tabelog_url"`
-	GurunaviURL      *string `json:"gurunavi_url"`
-	Smoking          *bool   `json:"smoking"`
-	Seats            *int    `json:"seats"`
-	LunchLowerLimit  *int    `json:"lunch_lower_limit"`
-	LunchUpperLimit  *int    `json:"lunch_upper_limit"`
-	DinnerLowerLimit *int    `json:"dinner_lower_limit"`
-	DinnerUpperLimit *int    `json:"dinner_upper_limit"`
+	ID               string      `json:"id"`
+	Name             string      `json:"name"`
+	Address          string      `json:"address"`
+	Tel              *string     `json:"tel"`
+	Website          *string     `json:"website"`
+	DataID           string      `json:"data_id"`
+	PlaceID          string      `json:"place_id"`
+	Latitude         float64     `json:"latitude"`
+	Longitude        float64     `json:"longitude"`
+	TabelogURL       *string     `json:"tabelog_url"`
+	GurunaviURL      *string     `json:"gurunavi_url"`
+	Smoking          *bool       `json:"smoking"`
+	Seats            *int        `json:"seats"`
+	LunchLowerLimit  *int        `json:"lunch_lower_limit"`
+	LunchUpperLimit  *int        `json:"lunch_upper_limit"`
+	DinnerLowerLimit *int        `json:"dinner_lower_limit"`
+	DinnerUpperLimit *int        `json:"dinner_upper_limit"`
+	Photos           []*Photo    `json:"photos"`
+	AverageScore     float64     `json:"average_score"`
+	TotalGood        int         `json:"total_good"`
+	TotalWent        int         `json:"total_went"`
+	TotalWantToGo    int         `json:"total_want_to_go"`
+	Category         *Category   `json:"category"`
+	Tags             []*Tag      `json:"tags"`
+	UserStates       *UserStates `json:"user_states"`
+}
+
+type RestaurantList struct {
+	Pagination  *Pagination   `json:"pagination"`
+	Restaurants []*Restaurant `json:"restaurants"`
+}
+
+type Review struct {
+	ID           string `json:"id"`
+	RestaurantID string `json:"restaurant_id"`
+	UserID       string `json:"user_id"`
+	Text         string `json:"text"`
+	Rating       int    `json:"rating"`
+}
+
+type ReviewList struct {
+	Pagination *Pagination `json:"pagination"`
+	Reviews    []*Review   `json:"reviews"`
+}
+
+type Tag struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type User struct {
 	ID     string `json:"id"`
 	Name   string `json:"name"`
 	Avatar string `json:"avatar"`
+}
+
+type UserStates struct {
+	ExcellentType ExcellentType `json:"excellent_type"`
+	StateType     StateType     `json:"state_type"`
+}
+
+type ExcellentType string
+
+const (
+	ExcellentTypeNone      ExcellentType = "NONE"
+	ExcellentTypeExcellent ExcellentType = "EXCELLENT"
+)
+
+var AllExcellentType = []ExcellentType{
+	ExcellentTypeNone,
+	ExcellentTypeExcellent,
+}
+
+func (e ExcellentType) IsValid() bool {
+	switch e {
+	case ExcellentTypeNone, ExcellentTypeExcellent:
+		return true
+	}
+	return false
+}
+
+func (e ExcellentType) String() string {
+	return string(e)
+}
+
+func (e *ExcellentType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ExcellentType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ExcellentType", str)
+	}
+	return nil
+}
+
+func (e ExcellentType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type StateType string
+
+const (
+	StateTypeNone StateType = "NONE"
+	StateTypeWant StateType = "WANT"
+	StateTypeWent StateType = "WENT"
+)
+
+var AllStateType = []StateType{
+	StateTypeNone,
+	StateTypeWant,
+	StateTypeWent,
+}
+
+func (e StateType) IsValid() bool {
+	switch e {
+	case StateTypeNone, StateTypeWant, StateTypeWent:
+		return true
+	}
+	return false
+}
+
+func (e StateType) String() string {
+	return string(e)
+}
+
+func (e *StateType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = StateType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid StateType", str)
+	}
+	return nil
+}
+
+func (e StateType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

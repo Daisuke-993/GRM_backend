@@ -4,31 +4,191 @@
 
 type Query {
   user(id: ID!): User
-  restaurants: [Restaurant]
+  restaurant_list: RestaurantList
+  restaurant(restaurant_id: ID!): Restaurant!
+  review_list(restaurant_id: ID!): ReviewList
 }
 
+# ユーザー情報
 type User {
+  # ユーザーID
   id: ID!
+
+  # ユーザー名
   name: String!
+
+  # アバター画像
   avatar: String!
 }
 
+# レストラン一覧
+type RestaurantList {
+  # ページネーション
+  pagination: Pagination!
+
+  # レストラン情報
+  restaurants: [Restaurant]!
+}
+
+# レビュー一覧
+type ReviewList {
+  # ページネーション
+  pagination: Pagination!
+
+  # 店舗レビュー情報
+  reviews: [Review]!
+}
+
+# レストラン情報
 type Restaurant {
+  # 店舗ID
   id: ID!
+
+  # 店舗名
   name: String!
+
+  # 住所
   address: String!
+
+  # 電話番号
   tel: String
+
+  # Webサイト
   website: String
   data_id: String!
   place_id: String!
+  
+  # 緯度
   latitude: Float!
+  
+  # 経度
   longitude: Float!
+  
+  # 食べログURL
   tabelog_url: String
+  
+  # ぐるなびURL
   gurunavi_url: String
+
+  # 喫煙可否
   smoking: Boolean
+
+  # 席数
   seats: Int
+  
+  # ランチ上限金額
   lunch_lower_limit: Int
+
+  # ランチ下限金額
   lunch_upper_limit: Int
+
+  # ディナー上限金額
   dinner_lower_limit: Int
+
+  # ディナー下限金額
   dinner_upper_limit: Int
+
+  # 店舗画像情報
+  photos: [Photo]!
+
+  # 平均評価
+  average_score: Float!
+
+  # 良かったの人数の総数
+  total_good: Int!
+
+  # 行った人数の総数
+  total_went: Int!
+
+  # 行きたい人数の総数
+  total_want_to_go: Int!
+
+  # 店舗カテゴリー情報
+  category: Category
+
+  # 店舗タグ情報
+  tags: [Tag]!
+
+  # 行った・行きたい・良かった情報
+  user_states: UserStates
+}
+
+# 店舗画像情報
+type Photo {
+  id: ID!
+  # 店舗ID
+  restaurant_id: ID!
+
+  # 画像格納PATH
+  file_path: String!
+
+  # 投稿したユーザーID
+  uploaded_by: ID! 
+
+  #メイン画像フラグ
+  main_flag: Boolean!
+}
+
+# レビュー情報
+type Review {
+  id: ID!
+
+  # 店舗ID
+  restaurant_id: ID!
+
+  # ユーザーID
+  user_id: ID!
+
+  # レビューのテキスト本文
+  text: String!
+
+  # ユーザーの評価
+  rating: Int!
+}
+
+# カテゴリー情報
+type Category {
+  # カテゴリーID
+  id: ID!
+
+  # カテゴリー名
+  name: String!
+}
+
+# タグ情報
+type Tag {
+  # タグID
+  id: ID!
+
+  # タグ名
+  name: String!
+}
+
+# 行った・行きたい・良かった情報
+type UserStates {
+  # 良かった
+  excellent_type: ExcellentType!
+
+  # 行った・行きたい
+  state_type: StateType!
+}
+
+# ページネーション情報
+type Pagination {
+  # 現在ページ番号
+  current_page: Int!
+
+  # 総ページ数
+  total_page: Int!
+}
+
+enum ExcellentType {
+  NONE
+  EXCELLENT
+}
+
+enum StateType {
+  NONE
+  WANT
+  WENT
 }
