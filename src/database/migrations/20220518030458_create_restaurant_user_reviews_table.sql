@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE `restaurant_user_reviews` (

@@ -31,7 +31,15 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 	}, nil
 }
 
-func (r *queryResolver) Restaurants(ctx context.Context) ([]*model.Restaurant, error) {
+func (r *queryResolver) RestaurantList(ctx context.Context) (*model.RestaurantList, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) Restaurant(ctx context.Context, restaurantID string) (*model.Restaurant, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) ReviewList(ctx context.Context, restaurantID string) (*model.ReviewList, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
@@ -46,4 +54,8 @@ type queryResolver struct{ *Resolver }
 //  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
 //    it when you're done.
 //  - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *queryResolver) Restaurants(ctx context.Context) ([]*model.Restaurant, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 type mutationResolver struct{ *Resolver }
